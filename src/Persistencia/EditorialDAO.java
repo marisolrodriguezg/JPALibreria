@@ -2,6 +2,7 @@
 package Persistencia;
 
 import Entidades.Editorial;
+import java.util.List;
 
 
 
@@ -37,4 +38,9 @@ public class EditorialDAO extends DAO<Editorial> {
         desconectar();
         return editorial;
     }
+            public List<Editorial> listarTodos() throws Exception {
+        conectar();
+        List<Editorial> editoriales = em.createQuery("SELECT e FROM Editorial e ").getResultList();
+        return editoriales;
+}
 }

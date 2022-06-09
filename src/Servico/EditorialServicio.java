@@ -2,6 +2,7 @@ package Servico;
 
 import Entidades.Editorial;
 import Persistencia.EditorialDAO;
+import java.util.List;
 
 public class EditorialServicio {
 
@@ -44,4 +45,20 @@ public class EditorialServicio {
             return false;
         }
     }
+           public List<Editorial> listarEditoriales() {
+        try {
+            return DAO.listarTodos();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+             public void imprimirEditorial() {
+        List<Editorial> editoriales = listarEditoriales();
+        for (Editorial editorial: editoriales) {        {
+            System.out.println(editorial.toString());
+
+        }
+    }
+}
 }

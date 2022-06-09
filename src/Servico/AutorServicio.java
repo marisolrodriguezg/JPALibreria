@@ -2,6 +2,7 @@ package Servico;
 
 import Entidades.Autor;
 import Persistencia.AutorDAO;
+import java.util.List;
 
 public class AutorServicio {
 
@@ -28,7 +29,7 @@ public class AutorServicio {
         }
     }
 
-    public boolean eliminarPorId(String id) {
+    public boolean eliminarPorId(Integer id) {
         try {
             DAO.eliminar(id);
             return true;
@@ -39,7 +40,7 @@ public class AutorServicio {
     }
     //punto 8 
 
-    public Autor buscarPorNombre(String nombre) {
+    public List <Autor> buscarPorNombre(String nombre) {
         try {
             return DAO.buscarPorNombre(nombre);
         } catch (Exception e) {
@@ -47,5 +48,38 @@ public class AutorServicio {
             return null;
         }
     }
+    public void imprimirAutorNombre(String nombre) {
+        List<Autor> autores = buscarPorNombre(nombre);
+        for (Autor autor: autores) {
+            System.out.println(autor.toString());
+
+        }
+    }
     
+
+    public List<Autor> listarAutores() {
+        try {
+            return DAO.listarTodos();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+//    imprimir list 
+
+    public void imprimirAutor() {
+        List<Autor> autores = listarAutores();
+        for (Autor autor: autores) {
+            System.out.println(autor.toString());
+
+        }
+    }
+     public Autor buscarPorId(Integer id) {
+        try {
+            return DAO.buscarPorId(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }
