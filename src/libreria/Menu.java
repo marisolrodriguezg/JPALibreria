@@ -1,10 +1,15 @@
 package libreria;
 
 import Entidades.Autor;
+import Entidades.Cliente;
 import Entidades.Editorial;
+import Entidades.Libro;
 import Servico.AutorServicio;
+import Servico.ClienteServicio;
 import Servico.EditorialServicio;
 import Servico.LibroServicio;
+import Servico.PrestamoServicio;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Menu {
@@ -13,6 +18,8 @@ public class Menu {
     AutorServicio as = new AutorServicio();
     LibroServicio ls = new LibroServicio();
     EditorialServicio es = new EditorialServicio();
+    ClienteServicio cs = new ClienteServicio();
+    PrestamoServicio p1 = new PrestamoServicio();
 
     public void menu() {
         try {
@@ -24,7 +31,12 @@ public class Menu {
                         + "\n 2) listar libros " + "\n 3) listar autores " + "\n 4) listar editoriales"
                         + "\n 5) Búsqueda de un Autor por nombre." + "\n 6) Búsqueda de un libro por ISBN. "
                         + "\n 7) Búsqueda de un libro por Título." + "\n 8) Búsqueda de un libro/s por nombre de Autor."
-                        + "\n 9) Búsqueda de un libro/s por nombre de Editorial" + "\n 10) Salir");
+                        + "\n 9) Búsqueda de un libro/s por nombre de Editorial"
+                        + "\n 10) Ingresar un cliente"
+                       
+                + "\n 11) ingrese un prestamo"
+                 + "\n 12) Devolver Prestamo"
+                + "\n 13) Salir");
 
                 System.out.println("--------------------------------");
 
@@ -33,7 +45,7 @@ public class Menu {
                     case 1:
                         System.out.println("ingrese el titulo del libro");
                         String titulo = palabraString();
-                        ls.crearLibro(titulo, 1000, 10, 5, queAutor(), queEditorial());
+                        ls.crearLibro(titulo, 1000, 10, 0, queAutor(), queEditorial());
                         System.out.println("el nuevo libro es");
                         ls.imprimirLibros();
                     case 2:
@@ -56,8 +68,8 @@ public class Menu {
                         break;
                     case 6:
                         System.out.println("ingrese el ISBN del libro que desea buscar");
-                        
-                        long buscarIsnb =  numLong();
+
+                        long buscarIsnb = numLong();
                         ls.imprimirPorIsbn(buscarIsnb);
                         break;
                     case 7:
@@ -76,6 +88,38 @@ public class Menu {
                         ls.imprimirPorEditorialN(nombreEditBuscar);
                         break;
                     case 10:
+                        System.out.println("ingrese el documento, nombre, apellido, y telefono del cliente");
+                        Long documento = numLong();
+                        String nombre = palabraString();
+                        String apellido = palabraString();
+                        String telefono = palabraString();
+                        cs.crearCliente(documento, nombre, apellido, telefono);
+                        break;
+
+                    case 11:
+                        //System.out.println("Ingrese el dia , mes  y año del prestamo ");
+                       // int diaP = numInt();
+                        //int mesP = numInt();
+                        //int anioP = numInt();
+                        //System.out.println("Ingrese el dia , mes  y año de la devolucuion ");
+                        //int diaD = numInt();
+                        //int mesD = numInt();
+                        //int anioD = numInt();
+                        Date fechaPrestamo = new Date(2000, 01, 11);
+                        Date fechaDevolucion = new Date(2000, 01, 13);
+                        p1.crearPrestamo(fechaPrestamo, fechaDevolucion, queLibro(), queCliente());
+                     
+                       // p1.crearPrestamo(1111-01-01, 1111-11-11, queLibro(), queCliente());
+                        ls.ejemplaresPrestados();
+                       // p1.imprimirPrestamos();
+                      
+                        break;
+                    case 12:
+                        
+                        p1.devolucion();
+                        ls.ejemplaresDevultos();
+                        break;
+                    case 13:
                         System.out.println("¿Está seguro que desea salir del programa (S/N");
 
                         String si = leer.next();
@@ -96,7 +140,7 @@ public class Menu {
 
                 }
 
-            } while (operacion == 0);
+            } while (operacion != 0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,10 +178,11 @@ public class Menu {
     public Editorial queEditorial() {
         Editorial nomEdit = null;
         System.out.println("elige la EDITORIL del libro segun su nombre");
-        es.imprimirEditorial();
+        
         System.out.println("a)elegir EDITORIAL existente // b)crear nueva EDITORIAL");
         String opEdit = leer.next();
         if (opEdit.equalsIgnoreCase("a")) {
+            es.imprimirEditorial();
             System.out.println("ingrese el nombre de la editorial elegida");
             nomEdit = es.buscarPorNombre(palabraString());
 
@@ -148,6 +193,45 @@ public class Menu {
             nomEdit = es.crearEditorial(palabraString());
         }
         return nomEdit;
+    }
+
+    public Libro queLibro() {
+
+        Libro libroElegido;
+        System.out.println("elige el libro que quiere ALQUILAR");
+        
+        ls.imprimirLibros();
+        System.out.println("ingrese el num de isbn elegino");
+        Long isnbElegido=numLong();
+       libroElegido= ls.buscarPorIsnb(isnbElegido);
+        
+        return libroElegido;
+    }
+
+    public Cliente queCliente() {
+
+        Cliente clienteElegido = null;
+          
+        System.out.println("elige el cliente segun su id");
+        cs.imprimirClientes();
+        System.out.println("a)elegir CLIENTE existente // b)crear un nuevo cliente");
+        String opEdit = palabraString();
+        if (opEdit.equalsIgnoreCase("a")) {
+            System.out.println("ingrese el id del cliente  elegido");
+           Integer numId=numInt();
+         clienteElegido=cs.buscarPorId(numId);
+            
+        } else {
+
+         System.out.println("ingrese el documento, nombre, apellido, y telefono del cliente");
+                        Long documento = numLong();
+                        String nombre = palabraString();
+                        String apellido = palabraString();
+                        String telefono = palabraString();
+                       clienteElegido= cs.crearCliente(documento, nombre, apellido, telefono);
+        }
+        
+        return clienteElegido;
     }
 
     public String palabraString() {
@@ -169,7 +253,8 @@ public class Menu {
         } catch (Exception e) {
             System.out.println("OJO debes ingresar un num");
             System.out.println(e.getMessage());
-            return null;
+            
+            return null ;
         }
     }
     //como hacer el try para long

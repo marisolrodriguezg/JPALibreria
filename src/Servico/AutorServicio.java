@@ -6,8 +6,8 @@ import java.util.List;
 
 public class AutorServicio {
 
-    private EditorialServicio editorialServicio;
-    private LibroServicio libroServicio;
+//    private EditorialServicio editorialServicio;
+//    private LibroServicio libroServicio;
     private AutorDAO DAO;
 
     public AutorServicio() {
@@ -20,7 +20,7 @@ public class AutorServicio {
         try {
 
             autor.setNombre(nombre);
-            
+
             DAO.guardar(autor);
             return autor;
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class AutorServicio {
     }
     //punto 8 
 
-    public List <Autor> buscarPorNombre(String nombre) {
+    public List<Autor> buscarPorNombre(String nombre) {
         try {
             return DAO.buscarPorNombre(nombre);
         } catch (Exception e) {
@@ -48,14 +48,14 @@ public class AutorServicio {
             return null;
         }
     }
+
     public void imprimirAutorNombre(String nombre) {
         List<Autor> autores = buscarPorNombre(nombre);
-        for (Autor autor: autores) {
+        for (Autor autor : autores) {
             System.out.println(autor.toString());
 
         }
     }
-    
 
     public List<Autor> listarAutores() {
         try {
@@ -69,12 +69,13 @@ public class AutorServicio {
 
     public void imprimirAutor() {
         List<Autor> autores = listarAutores();
-        for (Autor autor: autores) {
+        for (Autor autor : autores) {
             System.out.println(autor.toString());
 
         }
     }
-     public Autor buscarPorId(Integer id) {
+
+    public Autor buscarPorId(Integer id) {
         try {
             return DAO.buscarPorId(id);
         } catch (Exception e) {

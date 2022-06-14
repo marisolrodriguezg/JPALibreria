@@ -26,10 +26,6 @@ public class AutorDAO extends DAO<Autor> {
         desconectar();
         return autor;
 
-//        conectar();
-//        Autor autor = (Autor) em.createQuery("SELECT a FROM Autor a WHERE a.id LIKE :id").setParameter("id", id).getSingleResult();
-//        desconectar();
-//        return autor;
     }
     //punto 8
         public List<Autor> buscarPorNombre(String nombre) throws Exception {

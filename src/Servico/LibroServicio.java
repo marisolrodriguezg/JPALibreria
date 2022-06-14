@@ -12,6 +12,7 @@ public class LibroServicio {
     private AutorServicio autorServicio;
     private EditorialServicio editorialServicio;
     private LibroDAO DAO;
+    Scanner leer = new Scanner(System.in).useDelimiter("\n");
 
     public LibroServicio() {
         this.DAO = new LibroDAO();
@@ -86,9 +87,8 @@ public class LibroServicio {
     //punto 10 (1)
     public void imprimirPorTitulo(String titulo) {
 
-        Libro libro = buscarPorTitulo( titulo);
+        Libro libro = buscarPorTitulo(titulo);
         System.out.println(libro.toString());
-        
 
     }
 
@@ -103,7 +103,7 @@ public class LibroServicio {
     }
 
     public void imprimirPorAutor(String nombre) {
-        List<Libro> libros = buscarPorAutor( nombre);
+        List<Libro> libros = buscarPorAutor(nombre);
         for (Libro libro : libros) {
             System.out.println(libro.toString());
 
@@ -189,27 +189,54 @@ public class LibroServicio {
         }
     }
 //invento punto 12  convierte de String a int
+
     public void identificarClave(String clave) {
         Scanner leer = new Scanner(System.in).useDelimiter("\n");
-       // System.out.println("ingresar clave");
-      // String clave = leer.next();
+        // System.out.println("ingresar clave");
+        // String clave = leer.next();
         boolean esNum = true;
 
         for (int i = 0; i < clave.length(); i++) {
-            if (!Character.isDigit(clave.charAt(i))) {
+            if (!Character.isDigit(clave.charAt(i))) { //metodo para ver si es num
                 esNum = false;
                 imprimirPorEditorialN(clave);
                 break;
-            }
-            else
-            {
-             Integer claveNum = Integer.parseInt(clave);
-             imprimirPorEditorial(claveNum);
-                
+            } else {
+                Integer claveNum = Integer.parseInt(clave);
+                imprimirPorEditorial(claveNum);
+
             }
         }
-     
+
     }
+
+    public Libro ejemplaresPrestados() {
+        Libro l = null;
+        System.out.println("isbn del libro");
+        Long idLibro = leer.nextLong();
+        l = buscarPorIsnb(idLibro);
+        //COMO Hacer el try chach
+        if (l.getEjemplaresRestanes() == 0) {
+            System.out.println("lo siento no queda ese libro diponible");
+            return null;
+        } else {
+            l.setEjemplaresPrestados(l.getEjemplaresPrestados() + 1);
+            l.setEjemplaresRestanes(l.getEjemplares() - l.getEjemplaresPrestados());
+            DAO.editar(l);
+            return l;
+        }
+    }
+
+    public Libro ejemplaresDevultos() {
+        Libro l = null;
+        System.out.println("isbn del libro");
+        Long idLibro = leer.nextLong();
+        l = buscarPorIsnb(idLibro);
+        l.setEjemplaresRestanes(l.getEjemplaresRestanes() + 1);
+        l.setEjemplaresPrestados(l.getEjemplaresPrestados() - 1);
+
+        DAO.editar(l);
+        return l;
+    }
+
 }
-
-
