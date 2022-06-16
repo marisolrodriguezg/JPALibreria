@@ -19,7 +19,7 @@ public class Menu {
     LibroServicio ls = new LibroServicio();
     EditorialServicio es = new EditorialServicio();
     ClienteServicio cs = new ClienteServicio();
-    PrestamoServicio p1 = new PrestamoServicio();
+    PrestamoServicio ps = new PrestamoServicio();
 
     public void menu() {
         try {
@@ -107,16 +107,16 @@ public class Menu {
                         //int anioD = numInt();
                         Date fechaPrestamo = new Date(2000, 01, 11);
                         Date fechaDevolucion = new Date(2000, 01, 13);
-                        p1.crearPrestamo(fechaPrestamo, fechaDevolucion, queLibro(), queCliente());
+                        ps.crearPrestamo(fechaPrestamo, fechaDevolucion, queLibro(), queCliente());
                      
-                       // p1.crearPrestamo(1111-01-01, 1111-11-11, queLibro(), queCliente());
+                       // ps.crearPrestamo(1111-01-01, 1111-11-11, queLibro(), queCliente());
                         ls.ejemplaresPrestados();
-                       // p1.imprimirPrestamos();
+                       // ps.imprimirPrestamos();
                       
                         break;
                     case 12:
                         
-                        p1.devolucion();
+                        ps.devolucion();
                         ls.ejemplaresDevultos();
                         break;
                     case 13:
